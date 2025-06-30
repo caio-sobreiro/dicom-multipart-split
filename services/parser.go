@@ -26,7 +26,7 @@ func ParseMultipartFile(fp io.Reader, boundary string) ([]io.Reader, error) {
 	// Create a ReadCloser for each part
 	var readers []io.Reader
 	var part io.Reader
-	for _, p := range parts[1:] { // Skip the first part which is before the boundary
+	for _, p := range parts[1 : len(parts)-1] { // Skip the first and last parts which are outside the boundaries
 		if len(p) == 0 {
 			continue // Skip empty parts
 		}
@@ -50,6 +50,5 @@ func RemoveHeaderLines(part io.Reader) (io.Reader, error) {
 		return bytes.NewReader(data), nil // No header found, return as is
 	}
 
-	// Return the part after the header
 	return bytes.NewReader(data[headerEnd+4:]), nil
 }

@@ -24,7 +24,7 @@ func main() {
 	filePath := os.Args[1]
 	boundary := os.Args[2]
 
-	// Open the file specified by the first argument
+	// Open the file
 	fp, err := os.Open(filePath)
 	if err != nil {
 		fmt.Println("Error opening file:", err.Error())
@@ -35,14 +35,13 @@ func main() {
 	fmt.Println("File opened successfully")
 	fmt.Println("Parsing file...")
 
-	// Call the ParseMultipartFile function from the services package
+	// Parse the multipart file
 	parts, err := services.ParseMultipartFile(fp, boundary)
 	if err != nil {
 		fmt.Println("Error parsing multipart file:", err.Error())
 		os.Exit(1)
 	}
 
-	// Print the number of parts found
 	fmt.Println("Number of parts found:", len(parts))
 
 	// remove headers from each part
@@ -67,7 +66,6 @@ func main() {
 		}
 		defer partFile.Close()
 
-		// Copy the part content to the new file
 		if _, err := io.Copy(partFile, part); err != nil {
 			fmt.Println("Error writing part to file:", err.Error())
 			continue
